@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/roles" element={<RoleSelection />} />
+        <Route path="/" element={<RoleSelection />} />
         src="/Petish_Logo.png"
         {/* <Route path="/shelter" element={<ShelterDashboard />} /> */}
         {/* <Route path="/vet" element={<VetDashboard />} /> */}
