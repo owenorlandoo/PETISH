@@ -1,0 +1,248 @@
+{
+    "abi": 
+    [
+        {
+            "inputs": 
+            [
+            ],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "inputs": 
+            [
+                {
+                    "internalType": "uint8",
+                    "name": "role",
+                    "type": "uint8"
+                }
+            ],
+            "name": "register",
+            "outputs": 
+            [
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": 
+            [
+                {
+                    "internalType": "address",
+                    "name": "_user",
+                    "type": "address"
+                }
+            ],
+            "name": "getRole",
+            "outputs": 
+            [
+                {
+                    "internalType": "uint8",
+                    "name": "",
+                    "type": "uint8"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": 
+            [
+                {
+                    "internalType": "string",
+                    "name": "_name",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_species",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_uri",
+                    "type": "string"
+                }
+            ],
+            "name": "mint",
+            "outputs": 
+            [
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": 
+            [
+                {
+                    "internalType": "uint256",
+                    "name": "_id",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_vaccineHash",
+                    "type": "string"
+                }
+            ],
+            "name": "addVaccine",
+            "outputs": 
+            [
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": 
+            [
+                {
+                    "internalType": "uint256",
+                    "name": "_id",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_recordHash",
+                    "type": "string"
+                }
+            ],
+            "name": "addHealth",
+            "outputs": 
+            [
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": 
+            [
+                {
+                    "internalType": "uint256",
+                    "name": "_id",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_desc",
+                    "type": "string"
+                }
+            ],
+            "name": "addAchievement",
+            "outputs": 
+            [
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": 
+            [
+                {
+                    "internalType": "uint256",
+                    "name": "_id",
+                    "type": "uint256"
+                }
+            ],
+            "name": "requestAdoption",
+            "outputs": 
+            [
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": 
+            [
+                {
+                    "internalType": "uint256",
+                    "name": "_id",
+                    "type": "uint256"
+                }
+            ],
+            "name": "approveAdoption",
+            "outputs": 
+            [
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": 
+            [
+                {
+                    "internalType": "uint256",
+                    "name": "_id",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getPet",
+            "outputs": 
+            [
+                {
+                    "internalType": "string",
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "species",
+                    "type": "string"
+                },
+                {
+                    "internalType": "address",
+                    "name": "owner",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string[]",
+                    "name": "vaccines",
+                    "type": "string[]"
+                },
+                {
+                    "internalType": "string[]",
+                    "name": "health",
+                    "type": "string[]"
+                },
+                {
+                    "internalType": "string[]",
+                    "name": "achievements",
+                    "type": "string[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": 
+            [
+            ],
+            "name": "petCounter",
+            "outputs": 
+            [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": 
+            [
+            ],
+            "name": "shelter",
+            "outputs": 
+            [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ]
+}
