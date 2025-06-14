@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getContract } from "../utils/contract";
 import axios from "axios";
@@ -10,53 +10,51 @@ export default function ShelterDashboard() {
   const [species, setSpecies] = useState("");
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState("");
-  const [contract, setContract] = useState(null);
-  const [mintedHash, setMintedHash] = useState("");
+  const [ipfsHash, setIpfsHash] = useState("");
 
-  useEffect(() => {
-    const init = async () => {
-      const c = await getContract();
-      setContract(c);
-    };
-    init();
-  }, []);
+const handleUploadPetImage = async () => {
+  if (!file || !name || !species) {
+    alert("Lengkapi semua kolom.");
+    return;
+  }
 
-  const handleMint = async () => {
-    try {
-      setStatus("Uploading image to Pinata...");
-      const formData = new FormData();
-      formData.append("file", file);
+  try {
+    setStatus("Uploading image to Pinata...");
+    const formData = new FormData();
+    formData.append("file", file);
 
-      const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
-        maxBodyLength: "Infinity",
-        headers: {
-          "Content-Type": "multipart/form-data",
-          pinata_api_key: "694b3cd0db2cf7db9c1d",
-          pinata_secret_api_key: "9664c393d0dc13430a2695f0a828a2ccd70cc0bea9dcbc22355bda8da4092ff3",
-        },
-      });
+    const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+      maxBodyLength: "Infinity",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        pinata_api_key: "694b3cd0db2cf7db9c1d",
+        pinata_secret_api_key: "9664c393d0dc13430a2695f0a828a2ccd70cc0bea9dcbc22355bda8da4092ff3",
+      },
+    });
 
-      const ipfsHash = res.data.IpfsHash;
-      const ipfsURI = `ipfs://${ipfsHash}`;
+    const hash = res.data.IpfsHash;
+    const ipfsURI = `ipfs://${hash}`;
 
-      setStatus("Calling smart contract...");
-      const tx = await contract.mint(name, species, ipfsURI);
-      await tx.wait();
+    setIpfsHash(ipfsURI);
+    setStatus("Minting pet data to blockchain...");
 
-      setStatus("Mint successful!");
-      setMintedHash(ipfsHash);
-    } catch (err) {
-      console.error(err);
-      setStatus("Error: " + err.message);
-    }
-  };
+    const contract = await getContract(); // pastikan ini diimport
+    const tx = await contract.mint(name, species, ipfsURI);
+    await tx.wait();
+
+    setStatus("Upload successful! Gambar siap ditampilkan di User Dashboard.");
+  } catch (err) {
+    console.error(err);
+    setStatus("Upload error: " + err.message);
+  }
+};
+
 
   return (
     <div className="container" style={{ paddingTop: "2rem" }}>
       <button className="btn btn-secondary mb-4" onClick={() => navigate("/")}>← Back to Role Selection</button>
       <h2 className="text-center mb-4">Shelter Dashboard</h2>
-
-      <h3 className="text-center mb-4">Mint New Pet</h3>
+      {/* <h3 className="text-center mb-4">Upload Pet Image</h3> */}
 
       <div className="row justify-content-center">
         <div className="col-md-6">
@@ -89,29 +87,25 @@ export default function ShelterDashboard() {
             />
           </div>
 
-          <div className="d-grid gap-2 mb-4">
-            <button className="btn btn-primary" onClick={handleMint}>
-              Mint Pet
-            </button>
-          </div>
+          <button className="btn btn-primary w-100 mb-4" onClick={handleUploadPetImage}>
+            Upload Pet Image
+          </button>
 
           <p className="text-center">{status}</p>
 
-          {mintedHash && (
+          {/* {ipfsHash && (
             <div className="text-center mt-4">
-              <p><strong>Minted IPFS Hash:</strong> {mintedHash}</p>
-              <p>
-                <a
-                  href={`https://gateway.pinata.cloud/ipfs/${mintedHash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-link"
-                >
-                  View Image on IPFS
-                </a>
-              </p>
+              <p><strong>Image IPFS Hash:</strong> {ipfsHash}</p>
+              <a
+                href={`https://gateway.pinata.cloud/ipfs/${ipfsHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-link"
+              >
+                View Pet Image on IPFS
+              </a>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

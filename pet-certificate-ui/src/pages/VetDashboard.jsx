@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getContract } from "../utils/contract";
+import { uploadToIPFS } from "../utils/uploadToIPFS";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function VetDashboard() {
@@ -10,6 +11,11 @@ export default function VetDashboard() {
   const [health, setHealth] = useState("");
   const [contract, setContract] = useState(null);
   const [status, setStatus] = useState("");
+  const [vaccineFile, setVaccineFile] = useState(null);
+  const [achievement, setAchievement] = useState("");
+  const [achievementFile, setAchievementFile] = useState(null);
+
+
 
   useEffect(() => {
     const init = async () => {
@@ -20,14 +26,41 @@ export default function VetDashboard() {
   }, []);
 
   const handleAddVaccine = async () => {
+    if (!vaccineFile){
+      setStatus("Please upload a vaccine certificate file.");
+      return;
+    }
     try {
-      const tx = await contract.addVaccine(petId, vaccine);
+      setStatus("Uploading to IPFS...");
+      const ipfsHash = await uploadToIPFS(vaccineFile); // gunakan langsung
+
+      setStatus("Saving to blockchain...");
+      const tx = await contract.addVaccine(petId, ipfsHash, vaccine);
       await tx.wait();
-      setStatus("Vaccine added!");
+      setStatus("Vaccine certificate saved to blockchain!");
     } catch (err) {
       setStatus("Error adding vaccine: " + err.message);
     }
   };
+
+  const handleAddAchievement = async () => {
+    if (!achievementFile) {
+      setStatus("Please upload an achievement certificate file.");
+      return;
+    }
+    try {
+      setStatus("Uploading achievement to IPFS...");
+      const ipfsHash = await uploadToIPFS(achievementFile);
+
+      setStatus("Saving achievement to blockchain...");
+      const tx = await contract.addAchievement(petId, ipfsHash,achievement);
+      await tx.wait();
+      setStatus("Achievement certificate saved to blockchain!");
+    } catch (err) {
+      setStatus("Error adding achievement: " + err.message);
+    }
+  };
+
 
   const handleAddHealth = async () => {
     try {
@@ -66,9 +99,43 @@ export default function VetDashboard() {
             />
           </div>
 
+          <div className="mb-3">
+            <label className="form-label">Vaccine Certificate File</label>
+            <input
+              type="file"
+              className="form-control"
+              onChange={(e) => setVaccineFile(e.target.files[0])}
+            />
+          </div>
+
           <div className="d-grid gap-2 mb-4">
             <button className="btn btn-primary" onClick={handleAddVaccine}>
               Add Vaccine
+            </button>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Achievement</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter achievement description"
+              onChange={(e) => setAchievement(e.target.value)}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Achievement Certificate File</label>
+            <input
+              type="file"
+              className="form-control"
+              onChange={(e) => setAchievementFile(e.target.files[0])}
+            />
+          </div>
+
+          <div className="d-grid gap-2 mb-4">
+            <button className="btn btn-warning" onClick={handleAddAchievement}>
+              Add Achievement
             </button>
           </div>
 
